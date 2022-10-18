@@ -64,7 +64,6 @@ function gameStart(){
                     gameCamp.appendChild(gameOver);
 
                     endGame();
-                    cell.removeEventListener('click', endGame);
 
                     function endGame(){
                         const squares = document.querySelectorAll('.square');
@@ -75,8 +74,7 @@ function gameStart(){
                                 parentSquare.classList.add('bg-danger');
                             }
                         }
-                    }
-    
+                    }    
                 } else {
                     this.classList.add('bg-success');
                     score++;
@@ -85,6 +83,9 @@ function gameStart(){
                         endGame();
                     }
                 }
+                
+                // rimuovo il click sulle celle già cliccate
+                cell.removeEventListener('click', controlGame);
             }
         }
     }   
