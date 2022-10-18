@@ -64,6 +64,18 @@ function gameStart(){
                     gameCamp.appendChild(gameOver);
 
                     endGame();
+                    cell.removeEventListener('click', endGame);
+
+                    function endGame(){
+                        const squares = document.querySelectorAll('.square');
+                        for(let i = 0; i < squares.length; i++) {
+                            const num = parseInt(squares[i].innerText);
+                            if(bombPos.includes(num)){
+                                parentSquare = squares[i].parentNode;
+                                parentSquare.classList.add('bg-danger');
+                            }
+                        }
+                    }
     
                 } else {
                     this.classList.add('bg-success');
@@ -78,14 +90,6 @@ function gameStart(){
     }   
 
     drawCamp();
-                    
-    function endGame(){
-        const squares = document.querySelectorAll('.square');
-        for(let i = 0; i < squares.length; i++) {
-            const num = squares[i].querySelector('span');
-            console.log(num)
-        }
-    }
 }
 
 startButton.addEventListener('click', gameStart);
