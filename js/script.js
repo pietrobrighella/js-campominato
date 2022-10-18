@@ -16,6 +16,9 @@ function gameStart(){
             break;
     }
 
+    //Operatore terniario che in questo caso sostiuirebbe completamente lo switch oltre che inserire il risultato in una variabile
+    //const numCell = (selectLevel === 1) ? 100 : (selectLevel === 2) ? 81 : 49;
+
     const BOMB = 16;
     const bombPos = []
     while(bombPos.length < BOMB){
@@ -25,6 +28,9 @@ function gameStart(){
         }
     }
 
+    // controllo il numero delle possibilità
+    const MAX_ATTEMPT = cellGame - BOMB
+    score = 0;
     console.log(bombPos);
 
     function drawCamp(){
@@ -39,24 +45,47 @@ function gameStart(){
             cell.style.width = `calc(100% / ${cellCamp})`
             cell.style.height = `calc(100% / ${cellCamp})`
             cell.innerHTML = `
-            <span>${i}<span>
+            <span class="square">${i}<span>
             `
             gameCamp.appendChild(cell);
-            cell.addEventListener('click', function(){
+
+            cell.addEventListener('click', controlGame)
+
+            function controlGame(){
                 if(bombPos.includes(i)){
                     this.classList.add('bg-danger');
                     const gameOver = document.createElement('div');
                     gameOver.classList = 'game-over d-flex justify-content-center align-items-center shadow-lg';
-                    gameOver.innerHTML = `<h3>GAME OVER</h3>`;
+                    gameOver.innerHTML = `
+                    <div class="d-flex flex-column text-center mt-3">
+                        <h3>GAME OVER</h3>
+                        <p>Score: ${score}</p>
+                    </div>`;
                     gameCamp.appendChild(gameOver);
+
+                    endGame();
+    
                 } else {
                     this.classList.add('bg-success');
+                    score++;
+                    console.log(score);
+                    if (score == MAX_ATTEMPT){
+                        endGame();
+                    }
                 }
-            })
+            }
         }
-    }
+    }   
 
     drawCamp();
+                    
+    function endGame(){
+        const squares = document.querySelectorAll('.square');
+        for(let i = 0; i < squares.length; i++) {
+            const num = squares[i].querySelector('span');
+            console.log(num)
+        }
+    }
 }
 
 startButton.addEventListener('click', gameStart);
